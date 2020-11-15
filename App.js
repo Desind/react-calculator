@@ -41,14 +41,14 @@ const App: () => React$Node = () => {
   const [visible,setVisible] = useState(false);
 
   const [wynik, setWynik] = useState("0");
-  const [buffer, setBuffer] = useState("0");
+  const [buffer, setBuffer] = useState("");
   const [bufferSign, setBufferSign] = useState(null);
   const [usedDot, setUsedDot] = useState(false);
   const [firstInput,setFirstInput] = useState(true);
 
   const AC = () => {
     setFirstInput(true);
-    setBuffer("0");
+    setBuffer("");
     setBufferSign(null);
     setWynik("0");
     setUsedDot(false);
@@ -163,40 +163,58 @@ const App: () => React$Node = () => {
     setBufferSign(null);
   }
 
-
+  const evalNumInput = (number) => {
+    setBuffer(buffer + number);
+  }
+  const evalFinishCalc = () => {
+    setWynik(eval(buffer));
+  }
+  const up = () => {
+    setBuffer(wynik);
+    setWynik("0");
+  }
+  const evalPow = (power) => {
+    setBuffer("Math.pow("+buffer+","+power+")");
+  }
+  const percent = () => {
+    setBuffer(buffer+"/100");
+  }
+  const evalLn = () => {
+    setBuffer("Math.log("+buffer+")");
+  }
   const buttArray1 = [
-    {name:'x!', operation:() => factorial(), style:styles.darkButton, vis:!visible},
+    {name:'↑', operation:() => up(), style:styles.darkButton, vis:!visible},
     {name:'AC', operation:() => AC(), style:styles.darkButton, vis: false},
-    {name:'+/-', operation:() => switchSign(), style:styles.darkButton, vis: false},
-    {name:'%', operation:() => unaryOperator("%"), style:styles.darkButton, vis: false},
-    {name:'÷', operation:() => binaryOperator("/"), style:styles.orangeButton, vis: false},
+    {name:'(', operation:() => evalNumInput("("), style:styles.darkButton, vis: false},
+    {name:')', operation:() => evalNumInput(")"), style:styles.darkButton, vis: false},
+    {name:'÷', operation:() => evalNumInput("/"), style:styles.orangeButton, vis: false},
   ]
   const buttArray2 = [
-    {name:'10^x', operation:() => power10(), style:styles.darkButton, vis:!visible},
-    {name:'7', operation:() => numberInput("7"), style:styles.button, vis: false},
-    {name:'8', operation:() => numberInput("8"), style:styles.button, vis: false},
-    {name:'9', operation:() => numberInput("9"), style:styles.button, vis: false},
-    {name:'×', operation:() => binaryOperator("*"), style:styles.orangeButton, vis: false},
+    {name:'%', operation:() => percent(), style:styles.darkButton, vis:!visible},
+    {name:'7', operation:() => evalNumInput("7"), style:styles.button, vis: false},
+    {name:'8', operation:() => evalNumInput("8"), style:styles.button, vis: false},
+    {name:'9', operation:() => evalNumInput("9"), style:styles.button, vis: false},
+    {name:'×', operation:() => evalNumInput("*"), style:styles.orangeButton, vis: false},
   ]
   const buttArray3 = [
-    {name:'ln', operation:() => ln(), style:styles.darkButton, vis:!visible},
-    {name:'4', operation:() => numberInput("4"), style:styles.button, vis: false},
-    {name:'5', operation:() => numberInput("5"), style:styles.button, vis: false},
-    {name:'6', operation:() => numberInput("6"), style:styles.button, vis: false},
-    {name:'-', operation:() => binaryOperator("-"), style:styles.orangeButton, vis: false},
+    {name:'ln', operation:() => evalLn(), style:styles.darkButton, vis:!visible},
+    {name:'4', operation:() => evalNumInput("4"), style:styles.button, vis: false},
+    {name:'5', operation:() => evalNumInput("5"), style:styles.button, vis: false},
+    {name:'6', operation:() => evalNumInput("6"), style:styles.button, vis: false},
+    {name:'-', operation:() => evalNumInput("-"), style:styles.orangeButton, vis: false},
   ]
   const buttArray4 = [
-    {name:'x^2', operation:() => power2(), style:styles.darkButton, vis:!visible},
-    {name:'1', operation:() => numberInput("1"), style:styles.button, vis: false},
-    {name:'2', operation:() => numberInput("2"), style:styles.button, vis: false},
-    {name:'3', operation:() => numberInput("3"), style:styles.button, vis: false},
-    {name:'+', operation:() => binaryOperator("+"), style:styles.orangeButton, vis: false},
+    {name:'x^2', operation:() => evalPow(2), style:styles.darkButton, vis:!visible},
+    {name:'1', operation:() => evalNumInput("1"), style:styles.button, vis: false},
+    {name:'2', operation:() => evalNumInput("2"), style:styles.button, vis: false},
+    {name:'3', operation:() => evalNumInput("3"), style:styles.button, vis: false},
+    {name:'+', operation:() => evalNumInput("+"), style:styles.orangeButton, vis: false},
   ]
   const buttArray5 = [
-    {name:'x^3', operation:() => power3(), style:styles.darkButton, vis:!visible},
-    {name:'0', operation:() => numberInput("0"), style:styles.buttonZero, vis: false},
-    {name:',', operation:() => dotInput(), style:styles.button, vis: false},
-    {name:'=', operation:() => finishCalc(), style:styles.orangeButton, vis: false},
+    {name:'x^3', operation:() => evalPow(3), style:styles.darkButton, vis:!visible},
+    {name:'0', /*operation:() => numberInput("0"),*/ style:styles.buttonZero, vis: false},
+    {name:',', /*operation:() => dotInput(),*/ style:styles.button, vis: false},
+    {name:'=', operation:() => evalFinishCalc(), style:styles.orangeButton, vis: false},
   ]
 
   const buttArray = [
