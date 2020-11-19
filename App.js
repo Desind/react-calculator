@@ -212,8 +212,8 @@ const App: () => React$Node = () => {
   ]
   const buttArray5 = [
     {name:'x^3', operation:() => evalPow(3), style:styles.darkButton, vis:!visible},
-    {name:'0', /*operation:() => numberInput("0"),*/ style:styles.buttonZero, vis: false},
-    {name:',', /*operation:() => dotInput(),*/ style:styles.button, vis: false},
+    {name:'0', operation:() => evalNumInput("0"), style:styles.buttonZero, vis: false},
+    {name:',', operation:() => evalNumInput("."), style:styles.button, vis: false},
     {name:'=', operation:() => evalFinishCalc(), style:styles.orangeButton, vis: false},
   ]
 
